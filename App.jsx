@@ -271,10 +271,20 @@ const organisationMap = [
   },
 ]
 
+const governanceLinks = [
+  { id: 'quality', label: 'Quality Assurance' },
+  { id: 'risk', label: 'Risk Management' },
+  { id: 'regulatory', label: 'Regulatory Submissions' },
+  { id: 'ai-governance', label: 'AI Governance' },
+  { id: 'security', label: 'Security' },
+  { id: 'rnd', label: 'Software Development' },
+  { id: 'process', label: 'Supplier Management' },
+]
+
 const departmentMenus = [
   {
     id: 'clinical',
-    label: 'Clinical',
+    label: 'Clinical affairs',
     summary: 'Clinical evidence, literature review, evaluation plans and usability data.',
     items: [
       'Clinical evaluation plan',
@@ -301,21 +311,34 @@ const departmentMenus = [
   },
   {
     id: 'quality',
-    label: 'Quality & Risk',
-    summary: 'Design controls, risk management, process quality and document governance.',
+    label: 'Quality Assurance',
+    summary: 'Design controls, process quality and document governance.',
     items: [
       'Design control plan',
-      'Risk management file',
       'CAPA and deviations',
       'Supplier qualification',
       'Training and competence',
       'Internal audit readiness',
+      'Document control and versioning',
+    ],
+  },
+  {
+    id: 'risk',
+    label: 'Risk Management',
+    summary: 'Risk evaluation, hazard analysis and residual risk acceptance.',
+    items: [
+      'Risk management file',
+      'Hazard log',
+      'Risk-benefit review',
+      'Residual risk acceptance',
+      'Issue and change impact review',
+      'Safety signal monitoring',
     ],
   },
   {
     id: 'security',
-    label: 'Security & Privacy',
-    summary: 'Cybersecurity, privacy, threat modelling and vulnerability management.',
+    label: 'Security',
+    summary: 'Cybersecurity, threat modelling and vulnerability management.',
     items: [
       'Threat model and security requirements',
       'Secure SDLC and software controls',
@@ -918,6 +941,9 @@ function App() {
   const [expandedInfo, setExpandedInfo] = useState(null)
   const [theme, setTheme] = useState('light')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [functionsOpen, setFunctionsOpen] = useState(true)
+  const [governanceOpen, setGovernanceOpen] = useState(true)
+  const [phasesOpen, setPhasesOpen] = useState(true)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
@@ -931,6 +957,9 @@ function App() {
     setCurrentPage('overview')
     setSelectedPhase('Feasibility')
     setOpenMenu(null)
+    setFunctionsOpen(true)
+    setGovernanceOpen(true)
+    setPhasesOpen(true)
     setPhaseChecklist(starterPhaseChecklist)
     setAiChecklist(aiGovernanceChecklist)
     setProjectActions(starterActionTracker)
@@ -1305,12 +1334,13 @@ function App() {
     overview: 'Programme overview',
     'org-map': 'Organisation map',
     'audit-certification': 'Audit & certification',
-    'ai-governance': 'AI governance',
+    'ai-governance': 'Governance',
     phase: selectedPhase,
-    clinical: 'Clinical',
+    clinical: 'Clinical affairs',
     regulatory: 'Regulatory affairs',
-    quality: 'Quality & risk',
-    security: 'Security & privacy',
+    quality: 'Quality assurance',
+    risk: 'Risk management',
+    security: 'Security',
     rnd: 'R&D / technical',
     process: 'Process engineering',
   }[currentPage] || 'Programme overview'
@@ -1321,7 +1351,7 @@ function App() {
         <section className="deliverables-block phase-detail-page">
           <div className="section-heading compact phase-detail-header">
             <p className="section-tag">Department</p>
-            <h2>Clinical</h2>
+            <h2>Clinical affairs</h2>
             <p>Clinical evidence generation, literature review, evaluation planning, and patient safety alignment.</p>
           </div>
 
@@ -1521,13 +1551,83 @@ function App() {
       )
     }
 
+    if (currentPage === 'risk') {
+      return (
+        <section className="deliverables-block phase-detail-page">
+          <div className="section-heading compact phase-detail-header">
+            <p className="section-tag">Department</p>
+            <h2>Risk management</h2>
+            <p>Risk evaluation, hazard analysis, residual risk acceptance, and safety decision governance.</p>
+          </div>
+
+          <div className="department-grid">
+            <div className="summary-block">
+              <p className="standards-label">Risk focus</p>
+              <ul className="summary-list">
+                <li>Risk management plan and hazard analysis</li>
+                <li>Risk-benefit analysis and residual risk acceptance</li>
+                <li>Issue and change impact assessment</li>
+                <li>Safety signal monitoring and escalation</li>
+                <li>Design and post-market risk review</li>
+              </ul>
+            </div>
+
+            <div className="summary-block">
+              <p className="standards-label">Relevant standards</p>
+              <div className="standards-list">
+                <span className="standard-pill">ISO 14971</span>
+                <span className="standard-pill">MDR 2017/745</span>
+                <span className="standard-pill">IVDR 2017/746</span>
+                <span className="standard-pill">IEC 62366-1</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="department-detail-grid">
+            <div className="summary-block">
+              <p className="standards-label">Typical outputs</p>
+              <ul className="summary-list">
+                <li>Risk management plan</li>
+                <li>Hazard log and risk analysis</li>
+                <li>Risk-benefit evaluation</li>
+                <li>Residual risk acceptance record</li>
+                <li>Change impact and safety review</li>
+              </ul>
+            </div>
+
+            <div className="summary-block">
+              <p className="standards-label">Recommended templates</p>
+              <ul className="summary-list">
+                <li>Risk management plan template</li>
+                <li>Hazard analysis worksheet</li>
+                <li>Risk control matrix</li>
+                <li>Residual risk review form</li>
+                <li>Safety signal log</li>
+              </ul>
+            </div>
+
+            <div className="summary-block full-span">
+              <p className="standards-label">Key controls</p>
+              <ul className="summary-list">
+                <li>Risk identification and evaluation</li>
+                <li>Risk control and verification</li>
+                <li>Residual risk review and acceptance</li>
+                <li>Change impact review for safety</li>
+                <li>Monitoring and post-market vigilance</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      )
+    }
+
     if (currentPage === 'quality') {
       return (
         <section className="deliverables-block phase-detail-page">
           <div className="section-heading compact phase-detail-header">
             <p className="section-tag">Department</p>
-            <h2>Quality & Risk</h2>
-            <p>Design controls, procedure governance, supplier control, and product risk management discipline.</p>
+            <h2>Quality assurance</h2>
+            <p>Design controls, procedure governance, supplier control, and quality system discipline.</p>
           </div>
 
           <div className="department-grid">
@@ -1535,11 +1635,11 @@ function App() {
               <p className="standards-label">Quality focus</p>
               <ul className="summary-list">
                 <li>Design and development planning</li>
-                <li>Risk management and hazard analysis</li>
                 <li>Change control and CAPA</li>
                 <li>Supplier qualification and purchasing controls</li>
                 <li>Training and competence expectation</li>
                 <li>Audit and management review readiness</li>
+                <li>Document control and quality oversight</li>
               </ul>
             </div>
 
@@ -1547,7 +1647,6 @@ function App() {
               <p className="standards-label">Relevant standards</p>
               <div className="standards-list">
                 <span className="standard-pill">ISO 13485</span>
-                <span className="standard-pill">ISO 14971</span>
                 <span className="standard-pill">ISO 9001</span>
                 <span className="standard-pill">MDR 2017/745</span>
                 <span className="standard-pill">IVDR 2017/746</span>
@@ -2904,125 +3003,163 @@ function App() {
   })()
 
   return (
-    <div className="app-shell" data-theme={theme}>
-      <aside className={sidebarCollapsed ? 'sidebar sidebar-collapsed' : 'sidebar'}>
-        <div className="sidebar-header">
-          <button type="button" className="icon-button" aria-label="Toggle navigation" onClick={() => setSidebarCollapsed((current) => !current)}>
-            ☰
-          </button>
-          {!sidebarCollapsed && (
-            <div className="brand-wrap">
-              <div className="brand-mark">MD</div>
-              <div>
-                <p className="brand-name">MediDev Studio</p>
-                <p className="brand-subtitle">Medical device platform</p>
-              </div>
-            </div>
-          )}
+    <div className="page-shell">
+      <header className="global-topbar">
+        <div className="topbar-left">
+          <span className="header-kicker">Operating system</span>
+          <h2>{topbarTitle}</h2>
         </div>
 
-        <nav className="sidebar-nav" aria-label="Sidebar navigation">
-          <div className="sidebar-section">
-            <button type="button" className={currentPage === 'overview' ? 'sidebar-link active' : 'sidebar-link'} onClick={() => setCurrentPage('overview')}>
-              <span className="nav-icon">▣</span>
-              {!sidebarCollapsed && <span>Overview</span>}
-            </button>
-
-            <button type="button" className={currentPage === 'org-map' ? 'sidebar-link active' : 'sidebar-link'} onClick={() => setCurrentPage('org-map')}>
-              <span className="nav-icon">◎</span>
-              {!sidebarCollapsed && <span>Organisation map</span>}
-            </button>
-
-            <button type="button" className={currentPage === 'audit-certification' ? 'sidebar-link active' : 'sidebar-link'} onClick={() => setCurrentPage('audit-certification')}>
-              <span className="nav-icon">✓</span>
-              {!sidebarCollapsed && <span>Audit & certification</span>}
-            </button>
-          </div>
-
-          <div className="sidebar-group">
-            {!sidebarCollapsed && <span className="nav-label">Functions</span>}
-            <div className="nav-subgroup">
-              {departmentMenus.map((menu) => (
-                <button
-                  key={menu.id}
-                  type="button"
-                  className={currentPage === menu.id ? 'sidebar-link sidebar-link-sub active' : 'sidebar-link sidebar-link-sub'}
-                  onClick={() => navigateToDepartment(menu.id)}
-                >
-                  <span className="nav-icon">◌</span>
-                  {!sidebarCollapsed && <span>{menu.label}</span>}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="sidebar-group">
-            {!sidebarCollapsed && <span className="nav-label">Governance</span>}
-            <div className="nav-subgroup">
-              <button type="button" className={currentPage === 'quality' ? 'sidebar-link sidebar-link-sub active' : 'sidebar-link sidebar-link-sub'} onClick={() => navigateToDepartment('quality')}>
-                <span className="nav-icon">✦</span>
-                {!sidebarCollapsed && <span>Quality governance</span>}
-              </button>
-
-              <button type="button" className={currentPage === 'ai-governance' ? 'sidebar-link sidebar-link-sub active' : 'sidebar-link sidebar-link-sub'} onClick={() => setCurrentPage('ai-governance')}>
-                <span className="nav-icon">▣</span>
-                {!sidebarCollapsed && <span>AI governance</span>}
-              </button>
-
-              <button type="button" className={currentPage === 'security' ? 'sidebar-link sidebar-link-sub active' : 'sidebar-link sidebar-link-sub'} onClick={() => navigateToDepartment('security')}>
-                <span className="nav-icon">◈</span>
-                {!sidebarCollapsed && <span>Security & privacy</span>}
-              </button>
-            </div>
-          </div>
-
-          <div className="sidebar-group">
-            {!sidebarCollapsed && <span className="nav-label">Product development phases</span>}
-            <div className="nav-subgroup">
-              {phases.map((phase, index) => (
-                <button
-                  key={phase.name}
-                  type="button"
-                  className={currentPage === 'phase' && selectedPhase === phase.name ? 'sidebar-link sidebar-link-sub active' : 'sidebar-link sidebar-link-sub'}
-                  onClick={() => {
-                    setSelectedPhase(phase.name)
-                    setCurrentPage('phase')
-                  }}
-                >
-                  <span className="nav-index">{String(index + 1).padStart(2, '0')}</span>
-                  {!sidebarCollapsed && <span>{phase.name}</span>}
-                </button>
-              ))}
-            </div>
-          </div>
-        </nav>
-
-        <div className="sidebar-footer">
-          <button type="button" className="theme-toggle icon-toggle" onClick={() => setTheme((current) => (current === 'light' ? 'dark' : 'light'))}>
+        <div className="topbar-actions">
+          <button
+            type="button"
+            className="theme-toggle"
+            aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+            title={theme === 'light' ? 'Dark mode' : 'Light mode'}
+            onClick={() => setTheme((current) => (current === 'light' ? 'dark' : 'light'))}
+          >
             {theme === 'light' ? '☾' : '☀'}
           </button>
           <button type="button" className="login-button" onClick={() => setIsLoggedIn((current) => !current)}>
             {isLoggedIn ? 'Jane Smith' : 'Log in'}
           </button>
+          <button type="button" className="primary-button" onClick={handleLaunchOnboarding}>Launch onboarding</button>
         </div>
-      </aside>
+      </header>
 
-      <div className="content-area">
-        <header className="topbar">
-          <div className="topbar-left">
-            <span className="header-kicker">Operating system</span>
-            <h2>{topbarTitle}</h2>
-          </div>
-
-          <div className="topbar-actions">
-            <button type="button" className="theme-toggle" onClick={() => setTheme((current) => (current === 'light' ? 'dark' : 'light'))}>
-              {theme === 'light' ? 'Dark mode' : 'Light mode'}
+      <div className="app-shell" data-theme={theme}>
+        <aside className={sidebarCollapsed ? 'sidebar sidebar-collapsed' : 'sidebar'}>
+          <div className="sidebar-header">
+            <button type="button" className="icon-button" aria-label="Toggle navigation" onClick={() => setSidebarCollapsed((current) => !current)}>
+              ☰
             </button>
-            <button type="button" className="primary-button" onClick={handleLaunchOnboarding}>Launch onboarding</button>
+            {!sidebarCollapsed && (
+              <div className="brand-wrap">
+                <div className="brand-mark">MD</div>
+                <div>
+                  <p className="brand-name">MediDev Studio</p>
+                  <p className="brand-subtitle">Medical device platform</p>
+                </div>
+              </div>
+            )}
           </div>
-        </header>
 
-        <main className="content">{renderedPage}</main>
+          <nav className="sidebar-nav" aria-label="Sidebar navigation">
+            <div className="sidebar-section">
+              <button type="button" className={currentPage === 'overview' ? 'sidebar-link active' : 'sidebar-link'} onClick={() => setCurrentPage('overview')}>
+                <span className="nav-icon">▣</span>
+                {!sidebarCollapsed && <span>Overview</span>}
+              </button>
+
+              <button type="button" className={currentPage === 'org-map' ? 'sidebar-link active' : 'sidebar-link'} onClick={() => setCurrentPage('org-map')}>
+                <span className="nav-icon">◎</span>
+                {!sidebarCollapsed && <span>Organisation map</span>}
+              </button>
+
+              <button type="button" className={currentPage === 'audit-certification' ? 'sidebar-link active' : 'sidebar-link'} onClick={() => setCurrentPage('audit-certification')}>
+                <span className="nav-icon">✓</span>
+                {!sidebarCollapsed && <span>Audit & certification</span>}
+              </button>
+            </div>
+
+            <div className="sidebar-group">
+              {!sidebarCollapsed && <span className="nav-label">Functions</span>}
+              <div className="nav-subgroup">
+                <button
+                  type="button"
+                  className={departmentMenus.some((menu) => currentPage === menu.id) ? 'sidebar-link sidebar-link-sub active governance-toggle' : 'sidebar-link sidebar-link-sub governance-toggle'}
+                  onClick={() => setFunctionsOpen((current) => !current)}
+                >
+                  <span className="nav-icon">◌</span>
+                  {!sidebarCollapsed && <span>Functions</span>}
+                  {!sidebarCollapsed && <span className="collapse-indicator">{functionsOpen ? '▾' : '▸'}</span>}
+                </button>
+
+                {!sidebarCollapsed && functionsOpen && departmentMenus.map((menu) => (
+                  <button
+                    key={menu.id}
+                    type="button"
+                    className={currentPage === menu.id ? 'sidebar-link sidebar-link-sub active' : 'sidebar-link sidebar-link-sub'}
+                    onClick={() => navigateToDepartment(menu.id)}
+                  >
+                    <span className="nav-icon">•</span>
+                    <span>{menu.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="sidebar-group">
+              {!sidebarCollapsed && <span className="nav-label">Governance</span>}
+              <div className="nav-subgroup">
+                <button
+                  type="button"
+                  className={['quality', 'risk', 'regulatory', 'ai-governance', 'security', 'rnd', 'process'].includes(currentPage) ? 'sidebar-link sidebar-link-sub active governance-toggle' : 'sidebar-link sidebar-link-sub governance-toggle'}
+                  onClick={() => {
+                    setGovernanceOpen((current) => !current)
+                    if (!governanceOpen) {
+                      setCurrentPage('quality')
+                    }
+                  }}
+                >
+                  <span className="nav-icon">✦</span>
+                  {!sidebarCollapsed && <span>Governance</span>}
+                  {!sidebarCollapsed && <span className="collapse-indicator">{governanceOpen ? '▾' : '▸'}</span>}
+                </button>
+
+                {!sidebarCollapsed && governanceOpen && (
+                  <div className="governance-nested">
+                    {governanceLinks.map((link) => (
+                      <button
+                        key={link.id}
+                        type="button"
+                        className={currentPage === link.id ? 'sidebar-link sidebar-link-sub active' : 'sidebar-link sidebar-link-sub'}
+                        onClick={() => navigateToDepartment(link.id)}
+                      >
+                        <span className="nav-icon">•</span>
+                        <span>{link.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="sidebar-group">
+              {!sidebarCollapsed && <span className="nav-label">Product Development</span>}
+              <div className="nav-subgroup">
+                <button
+                  type="button"
+                  className={currentPage === 'phase' ? 'sidebar-link sidebar-link-sub active governance-toggle' : 'sidebar-link sidebar-link-sub governance-toggle'}
+                  onClick={() => setPhasesOpen((current) => !current)}
+                >
+                  <span className="nav-icon">✧</span>
+                  {!sidebarCollapsed && <span>Product Development</span>}
+                  {!sidebarCollapsed && <span className="collapse-indicator">{phasesOpen ? '▾' : '▸'}</span>}
+                </button>
+
+                {!sidebarCollapsed && phasesOpen && phases.map((phase, index) => (
+                  <button
+                    key={phase.name}
+                    type="button"
+                    className={currentPage === 'phase' && selectedPhase === phase.name ? 'sidebar-link sidebar-link-sub active' : 'sidebar-link sidebar-link-sub'}
+                    onClick={() => {
+                      setSelectedPhase(phase.name)
+                      setCurrentPage('phase')
+                    }}
+                  >
+                    <span className="nav-index">{String(index + 1).padStart(2, '0')}</span>
+                    <span>{phase.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </nav>
+        </aside>
+
+        <div className="content-area">
+          <main className="content">{renderedPage}</main>
+        </div>
       </div>
     </div>
   )
